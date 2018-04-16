@@ -8,7 +8,7 @@ module.exports = async function() {
   var result = {};
 
   // Get the main page.
-  var res = await fetch('/maimai-mobile/home/', { credentials: "same-origin" });
+  var res = await fetch('https://maimai-net.com/maimai-mobile/home/', { credentials: "same-origin" });
   var $ = cheerio.load(await res.text());
   result['cardName'] = $('.status_data div:first-child a').text();
   result['title'] = $('.status_data div:nth-child(2) span').text();
@@ -29,7 +29,7 @@ module.exports = async function() {
   body.set('y', '10');
   for (var d = 1; d <= difficulties.length; d++) {
     var difficulty = difficulties[d];
-    var res = await fetch('/maimai-mobile/music/'+ difficulty +'Genre/', {
+    var res = await fetch('https://maimai-net.com/maimai-mobile/music/'+ difficulty +'Genre/', {
       method: 'POST', body: body
     });
     var $ = cheerio.load(await res.text());
