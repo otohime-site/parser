@@ -1,6 +1,4 @@
-const cheerio = require('cheerio');
-require('buffer');
-Stream = require('stream');
+const cheerio = require('react-native-cheerio');
 
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

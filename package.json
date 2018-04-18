@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "license": "MIT",
   "dependencies": {
-    "buffer": "^5.1.0",
-    "cheerio": "^1.0.0-rc.2",
-    "events": "^2.0.0",
-    "stream": "^0.0.2"
+    "react-native-cheerio": "^1.0.0-rc.4"
   }
 }
