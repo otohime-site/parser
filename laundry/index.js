@@ -34,7 +34,7 @@ module.exports = async function() {
     });
     var $ = cheerio.load(await res.text());
     var category = '';
-    result[scores] = [];
+    result['scores'] = [];
     $('#accordion > div, #accordion > h3').each(function() {
       if (this.tagName == 'DIV') {
         category = $(this).find('span').text();
@@ -61,7 +61,7 @@ module.exports = async function() {
         score.songName = $this.text().trim();
         score.score = "0";
       }
-      result[scores].push(score);
+      result['scores'].push(score);
     });
     await sleep(1000);
   }
