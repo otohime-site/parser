@@ -27,6 +27,7 @@ module.exports = async function() {
   body.set('word', '1');
   body.set('x', '50');
   body.set('y', '10');
+  result['scores'] = [];
   for (var d = 0; d < difficulties.length; d++) {
     var difficulty = difficulties[d];
     var res = await fetch('https://maimai-net.com/maimai-mobile/music/'+ difficulty +'Genre/', {
@@ -34,7 +35,6 @@ module.exports = async function() {
     });
     var $ = cheerio.load(await res.text());
     var category = '';
-    result['scores'] = [];
     $('#accordion > div, #accordion > h3').each(function() {
       if (this.tagName == 'DIV') {
         category = $(this).find('span').text();
