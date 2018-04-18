@@ -1,4 +1,6 @@
 const cheerio = require('cheerio');
+require('buffer');
+Stream = require('stream');
 
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
