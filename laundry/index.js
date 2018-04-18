@@ -30,7 +30,7 @@ module.exports = async function() {
   for (var d = 1; d <= difficulties.length; d++) {
     var difficulty = difficulties[d];
     var res = await fetch('https://maimai-net.com/maimai-mobile/music/'+ difficulty +'Genre/', {
-      method: 'POST', body: body
+      method: 'POST', body: body, credentials: "same-origin"
     });
     var $ = cheerio.load(await res.text());
     var category = '';
