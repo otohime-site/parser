@@ -27,7 +27,7 @@ module.exports = async function() {
   body.set('word', '1');
   body.set('x', '50');
   body.set('y', '10');
-  for (var d = 1; d <= difficulties.length; d++) {
+  for (var d = 0; d < difficulties.length; d++) {
     var difficulty = difficulties[d];
     var res = await fetch('https://maimai-net.com/maimai-mobile/music/'+ difficulty +'Genre/', {
       method: 'POST', body: body, credentials: "same-origin"
