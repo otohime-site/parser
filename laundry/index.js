@@ -32,7 +32,8 @@ module.exports = async function(progress) {
     var $ = cheerio.load(await res.text());
     var category = '';
     $('#accordion > div, #accordion > h3').each(function() {
-      if (this.tagName == 'DIV') {
+      // https://github.com/cheeriojs/cheerio/issues/187
+      if (this.name == 'DIV') {
         category = $(this).find('span').text();
         return;
       }
