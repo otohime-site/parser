@@ -1,11 +1,8 @@
 const cheerio = require('react-native-cheerio');
 
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-};
-
-module.exports = async function() {
+module.exports = async function(progress) {
   var result = {};
+  var difficulties = ['easy', 'basic', 'advanced', 'expert', 'master', 'remaster'];
 
   // Get the main page.
   var res = await fetch('https://maimai-net.com/maimai-mobile/home/', { credentials: "same-origin" });
@@ -17,10 +14,9 @@ module.exports = async function() {
   result['rating'] = ratingFound[1];
   result['maxRating'] = ratingFound[2];
   result['class'] = $('.f_r img').attr('src').split('/').pop().match(/[0-9]+\_[0-9]+/)[0];
-  await sleep(1000);
+  await progress(1 / (difficulties.length + 1) * 100);
 
   // Get all song results.
-  var difficulties = ['easy', 'basic', 'advanced', 'expert', 'master', 'remaster'];
   var body = new URLSearchParams();
   body.set('genre', '99');
   body.set('level', '2');
@@ -63,7 +59,7 @@ module.exports = async function() {
       }
       result['scores'].push(score);
     });
-    await sleep(1000);
+    await progress((2 + d) / (difficulties.length + 1) * 100);
   }
   return result;
 };
