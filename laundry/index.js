@@ -7,6 +7,9 @@ module.exports = async function(progress) {
   // Get the main page.
   var res = await fetch('https://maimai-net.com/maimai-mobile/home/', { credentials: "same-origin" });
   var $ = cheerio.load(await res.text());
+  if ($('.status_data').length < 1) {
+    throw new Error('Cannot get user data!');
+  }
   result['cardName'] = $('.status_data div:first-child a').text();
   result['title'] = $('.status_data div:nth-child(2) span').text();
   var rawRating = $('.status_data div:nth-child(3) span').text();
@@ -31,6 +34,9 @@ module.exports = async function(progress) {
     });
     var $ = cheerio.load(await res.text());
     var category = '';
+    if ($('#accordion').length < 1) {
+      throw new Error('Cannot get score data!');
+    }
     $('#accordion > div, #accordion > h3').each(function() {
       if (this.tagName.search(/^DIV$/i) != -1) {
         category = $(this).find('span').text();
