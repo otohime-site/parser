@@ -2,7 +2,15 @@
   "name": "semiquaver-parser",
   "version": "0.0.1",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint *.js **/*.js"
+  },
   "dependencies": {
     "react-native-cheerio": "^1.0.0-rc.4"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0"
   }
 }
