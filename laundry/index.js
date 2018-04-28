@@ -15,7 +15,8 @@ module.exports = async (progress) => {
   result.title = $r('.status_data div:nth-child(2) span').text();
   const rawRating = $r('.status_data div:nth-child(3) span').text();
   const ratingFound = rawRating.match(/([0-9]+\.[0-9]+)[^0-9]+([0-9]+\.[0-9]+)/);
-  [result.rating, result.maxRating] = ratingFound;
+  result.rating = parseFloat(ratingFound[0]);
+  result.maxRating = parseFloat(ratingFound[1]);
   [result.class] = $r('.f_r img').attr('src').split('/').pop()
     .match(/[0-9]+_[0-9]+/);
   await progress(100 / (difficulties.length + 1));
@@ -53,6 +54,7 @@ module.exports = async (progress) => {
       if ($title.length > 0) {
         score.songName = $this.find('div:first-child').text();
         [score.score] = $this.find('.achievement').text().match(/[0-9]+\.[0-9]+/);
+        score.score = parseFloat(score.score);
         const flags = [];
         $this.find('.text_r img').each(() => {
           const src = $(this).attr('src');
@@ -64,10 +66,10 @@ module.exports = async (progress) => {
         score.flag = flags.join('|');
       } else {
         score.songName = $this.text().trim();
-        score.score = '0';
+        score.score = 0;
       }
       const $next = $this.next('ul');
-      if (score.score !== '0') {
+      if (score.score !== 0) {
         score.rawScore = parseInt($next.find('tr:nth-child(2) td:last-child').text().replace(/,/g, ''), 10);
       }
       score.songId = parseInt($next.find('input[name=musicId]').val(), 10);
