@@ -41,7 +41,7 @@ module.exports = async (progress) => {
     if ($('#accordion').length < 1) {
       throw new Error('Cannot get score data!');
     }
-    $('#accordion > div, #accordion > h3').each(() => {
+    $('#accordion > div, #accordion > h3').each(function parseScores() {
       const $this = $(this);
       if (this.tagName.search(/^DIV$/i) !== -1) {
         category = $this.find('span').text();
@@ -56,7 +56,7 @@ module.exports = async (progress) => {
         [score.score] = $this.find('.achievement').text().match(/[0-9]+\.[0-9]+/);
         score.score = parseFloat(score.score);
         const flags = [];
-        $this.find('.text_r img').each(() => {
+        $this.find('.text_r img').each(function parseFlags() {
           const src = $(this).attr('src');
           const srcFound = src.match(/(fc_silver|fc_gold|ap|100)\.png/);
           if (srcFound) {
