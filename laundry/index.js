@@ -67,6 +67,7 @@ module.exports = async (progress) => {
       } else {
         score.songName = $this.text().trim();
         score.score = 0;
+        score.flag = '';
       }
       const $next = $this.next('ul');
       if (score.score !== 0) {
