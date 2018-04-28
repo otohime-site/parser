@@ -71,6 +71,8 @@ module.exports = async (progress) => {
       const $next = $this.next('ul');
       if (score.score !== 0) {
         score.rawScore = parseInt($next.find('tr:nth-child(2) td:last-child').text().replace(/,/g, ''), 10);
+      } else {
+        score.rawScore = 0;
       }
       score.songId = parseInt($next.find('input[name=musicId]').val(), 10);
       result.scores.push(score);
