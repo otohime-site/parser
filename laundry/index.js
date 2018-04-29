@@ -17,8 +17,12 @@ module.exports = async (progress) => {
   const ratingFound = rawRating.match(/([0-9]+\.[0-9]+)[^0-9]+([0-9]+\.[0-9]+)/);
   result.rating = parseFloat(ratingFound[0]);
   result.maxRating = parseFloat(ratingFound[1]);
-  [result.class] = $r('.f_r img').attr('src').split('/').pop()
-    .match(/[0-9]+_[0-9]+/);
+  if ($r('.f_r img').length > 0) {
+    [result.class] = $r('.f_r img').attr('src').split('/').pop()
+      .match(/[0-9]+_[0-9]+/);
+  } else {
+    result.class = '';
+  }
   await progress(100 / (difficulties.length + 1));
 
   // Get all song results.
