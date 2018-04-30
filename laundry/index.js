@@ -15,8 +15,8 @@ module.exports = async (progress) => {
   result.title = $r('.status_data div:nth-child(2) span').text();
   const rawRating = $r('.status_data div:nth-child(3) span').text();
   const ratingFound = rawRating.match(/([0-9]+\.[0-9]+)[^0-9]+([0-9]+\.[0-9]+)/);
-  result.rating = parseFloat(ratingFound[0]);
-  result.maxRating = parseFloat(ratingFound[1]);
+  result.rating = parseFloat(ratingFound[1]);
+  result.maxRating = parseFloat(ratingFound[2]);
   if ($r('.f_r img').length > 0) {
     [result.class] = $r('.f_r img').attr('src').split('/').pop()
       .match(/[0-9]+_[0-9]+/);
