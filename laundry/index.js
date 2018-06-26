@@ -62,7 +62,7 @@ module.exports = async (progress) => {
         const flags = [];
         $this.find('.text_r img').each(function parseFlags() {
           const src = $(this).attr('src');
-          const srcFound = src.match(/(fc_silver|fc_gold|ap|100)\.png/);
+          const srcFound = src.match(/(fc_silver|fc_gold|ap|ap_plus|100)\.png/);
           if (srcFound) {
             flags.push(srcFound[1]);
           }
