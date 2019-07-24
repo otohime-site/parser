@@ -12,7 +12,7 @@ module.exports = async (progress) => {
     throw new Error('Cannot get user data!');
   }
   result.cardName = $r('.name_block').text();
-  result.title = $r('.trophy_inner_block').text();
+  result.title = $r('.trophy_inner_block').text().trim();
   const rawRating = $r('.rating_block').text();
   const rawMaxRating = $r('.rating_block').parent().next().text();
   const maxRatingFound = rawMaxRating.match(/([0-9]+)/);
@@ -37,7 +37,7 @@ module.exports = async (progress) => {
     // eslint-disable-next-line no-loop-func
     $('.main_wrapper > .screw_block, .main_wrapper > .w_450').each(function parseScores() {
       const $this = $(this);
-      if (this.className.search('screw_block') >= 0) {
+      if ($this.hasClass('screw_block')) {
         category = $this.text();
         return;
       }
@@ -48,7 +48,11 @@ module.exports = async (progress) => {
       const rawScore = $this.find('.music_score_block:first-child').text().replace('%', '');
       score.score = parseFloat(rawScore || '0');
       score.level = $this.find('.music_lv_block').text();
-      score.deluxe = ($this.find('.music_kind_icon').attr('src') || '').indexOf('dx') >= 0;
+      if ($this.find('.music_kind_icon').length > 0) {
+        score.deluxe = ($this.find('.music_kind_icon').attr('src') || '').indexOf('dx.png') >= 0;
+      } else {
+        score.deluxe = ($this.attr('id') || '').indexOf('dx') >= 0;
+      }
 
       const flags = [];
       $this.find('img.f_r').each(function parseFlags() {
