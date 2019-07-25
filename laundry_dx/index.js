@@ -45,7 +45,7 @@ module.exports = async (progress) => {
       score.category = category;
       score.difficulty = d;
       score.songName = $this.find('.music_name_block').text();
-      const rawScore = $this.find('.music_score_block:first-child').text().replace('%', '');
+      const rawScore = $this.find('.music_score_block').first().text().replace('%', '');
       score.score = parseFloat(rawScore || '0');
       score.level = $this.find('.music_lv_block').text();
       if ($this.find('.music_kind_icon').length > 0) {
@@ -63,7 +63,7 @@ module.exports = async (progress) => {
         }
       });
       score.flag = flags.join('|');
-      score.songId = $this.find('input[name=idx]').val();
+      score.internalSongId = $this.find('input[name=idx]').val();
       result.scores.push(score);
     });
     // eslint-disable-next-line no-mixed-operators, no-await-in-loop
