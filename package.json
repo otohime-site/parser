@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint *.js **/*.js",
+    "lint": "eslint src/**/*.ts",
     "test": "jest --coverage"
   },
   "dependencies": {
