@@ -1,5 +1,5 @@
 
-import { assertNonEmpty, assertBetween } from "../utils"
+import { assertNonEmpty, assertBetween } from '../utils'
 
 export interface ScoresParseEntry {
   category: number
@@ -19,7 +19,7 @@ const parseScores = (htmlContent: string): ScoresParseEntry[] => {
   if (entries.length === 0) {
     throw new Error('Cannot read scores!')
   }
-  const {result} = entries.reduce<{result: ScoresParseEntry[], currentCategory: number}>(
+  const { result } = entries.reduce<{result: ScoresParseEntry[], currentCategory: number}>(
     (prev, curr) => {
       if (curr.className.includes('screw_block')) {
         // XXX: This assume none of the category will be skipped
@@ -31,7 +31,7 @@ const parseScores = (htmlContent: string): ScoresParseEntry[] => {
       const rawScore = (curr.querySelector('.music_score_block')?.textContent ?? '').replace('%', '')
       if (rawScore.length === 0) {
         // Skip if it is not played yet
-        return {...prev}
+        return { ...prev }
       }
       const rawMusicDifficulty = (curr.querySelector('div')?.className?.match(/basic|advanced|expert|master|remaster/) ?? [''])[0]
       const category = prev.currentCategory
@@ -45,7 +45,7 @@ const parseScores = (htmlContent: string): ScoresParseEntry[] => {
       assertBetween(difficulty, 0, 4, 'difficulty')
       assertNonEmpty(rawDeluxe, 'deluxe')
       const score = parseFloat(rawScore)
-      const deluxe = (rawDeluxe === 'dx' || rawDeluxe.indexOf('dx.png') >= 0)
+      const deluxe = (rawDeluxe === 'dx' || rawDeluxe.includes('dx.png'))
       assertBetween(score, 0, 101, 'score')
 
       const flagImages = [...curr.querySelectorAll('img.f_r').values()]
@@ -54,25 +54,24 @@ const parseScores = (htmlContent: string): ScoresParseEntry[] => {
         sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+'
       }>((prevFlags, currFlagImg) => {
         const comboMatches = (currFlagImg.getAttribute('src') ?? '').match(/(fc|fcp|ap|app)\.png/)
-        if (comboMatches) {
-          switch(comboMatches[1]) {
-            case 'fc': return {...prevFlags, combo_flag: 'fc'}
-            case 'fcp': return {...prevFlags, combo_flag: 'fc+'}
-            case 'ap': return {...prevFlags, combo_flag: 'ap'}
-            case 'app': return {...prevFlags, combo_flag: 'ap+'}
+        if (comboMatches !== null) {
+          switch (comboMatches[1]) {
+            case 'fc': return { ...prevFlags, combo_flag: 'fc' }
+            case 'fcp': return { ...prevFlags, combo_flag: 'fc+' }
+            case 'ap': return { ...prevFlags, combo_flag: 'ap' }
+            case 'app': return { ...prevFlags, combo_flag: 'ap+' }
           }
         }
         const syncMatches = (currFlagImg.getAttribute('src') ?? '').match(/(fs|fsp|fsd|fsdp)\.png/)
-        if (syncMatches) {
-          switch(syncMatches[1]) {
-            case 'fs': return {...prevFlags, sync_flag: 'fs'}
-            case 'fsp': return {...prevFlags, sync_flag: 'fs+'}
-            case 'fsd': return {...prevFlags, sync_flag: 'fdx'}
-            case 'fsdp': return {...prevFlags, sync_flag: 'fdx+'}
+        if (syncMatches !== null) {
+          switch (syncMatches[1]) {
+            case 'fs': return { ...prevFlags, sync_flag: 'fs' }
+            case 'fsp': return { ...prevFlags, sync_flag: 'fs+' }
+            case 'fsd': return { ...prevFlags, sync_flag: 'fdx' }
+            case 'fsdp': return { ...prevFlags, sync_flag: 'fdx+' }
           }
-
         }
-        return {...prevFlags}
+        return { ...prevFlags }
       }, {
         combo_flag: '',
         sync_flag: ''
@@ -94,7 +93,7 @@ const parseScores = (htmlContent: string): ScoresParseEntry[] => {
     },
     {
       result: [],
-      currentCategory: 0 
+      currentCategory: 0
     }
   )
   return result

@@ -1,4 +1,4 @@
-import { assertNonEmpty, assertBetween } from "../utils"
+import { assertNonEmpty, assertBetween } from '../utils'
 
 export interface PlayerParseResult {
   card_name: string
@@ -6,9 +6,8 @@ export interface PlayerParseResult {
   rating: number
   max_rating: number
   title: string
-  trophy: 'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow'; 
+  trophy: 'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow'
 }
-
 
 const parsePlayer = (htmlContent: string): PlayerParseResult => {
   const document: HTMLDocument = new DOMParser().parseFromString(htmlContent, 'text/html')
