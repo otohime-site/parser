@@ -2,14 +2,17 @@
   "name": "@otohime-site/parser",
   "version": "0.2.0",
   "license": "MIT",
+  "module": "dist/index.mjs",
   "scripts": {
     "lint": "eslint src/**/*.ts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "tsc"
   },
   "dependencies": {
     "jest": "^26.6.3"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^6.1.0",
     "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
@@ -20,7 +23,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jsdom": "^16.4.0",
-    "rollup": "^2.33.2",
     "ts-jest": "^26.4.4",
     "typescript": "^4.0.5"
   }

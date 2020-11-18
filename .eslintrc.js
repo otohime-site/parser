@@ -3,6 +3,6 @@ module.exports = {
     'standard-with-typescript'
   ],
   parserOptions: {
-    project: 'tsconfig.json'
+    project: 'tsconfig.lint.json'
   }
 }

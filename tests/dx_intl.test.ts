@@ -16,10 +16,10 @@ const playerContent = `
           <img src="https://maimaidx-eng.com/maimai-mobile/img/rating_base_rainbow.png" class="h_30 f_r" />
           <div class="rating_block f_11">8500</div>
         </div>
-		<div class="p_r_5 f_11">MAX：8600</div>
-	  </div>
-	</div>
-	<img src="https://maimaidx-eng.com/maimai-mobile/img/grade_13e4SAdtXj.png">
+    <div class="p_r_5 f_11">MAX：8600</div>
+    </div>
+  </div>
+  <img src="https://maimaidx-eng.com/maimai-mobile/img/grade_13e4SAdtXj.png">
   </div>
 </div>
 `
@@ -35,8 +35,8 @@ const scoresContent = `
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_fc.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_ss.png" class="h_30 f_r">
       </form>
-	</div>
-	<img src="https://maimaidx-eng.com/maimai-mobile/img/music_standard.png" class="music_kind_icon">
+  </div>
+  <img src="https://maimaidx-eng.com/maimai-mobile/img/music_standard.png" class="music_kind_icon">
   </div>
   <div class="w_450 m_15 p_r f_0" id="dx_1" style="margin-top:30px">
     <div class="music_master_score_back pointer p_3">
@@ -65,12 +65,12 @@ const scoresContent = `
 `
 test('Player should parse successfully', () => {
   expect(parsePlayer(playerContent)).toEqual({
-	card_name: 'ＴＥＳＴ',
-	title: 'Test Title',
-	trophy: 'gold',
-	rating: 8500,
-	max_rating: 8600,
-	grade: 13
+    card_name: 'ＴＥＳＴ',
+    title: 'Test Title',
+    trophy: 'gold',
+    rating: 8500,
+    max_rating: 8600,
+    grade: 13
   })
 })
 test('Score should parse successfully', () => {
