@@ -12,6 +12,6 @@ jobs:
           node-version: '14'
       - run: npm install
       - run: npm run build
-      - run: npm publish dist/
+      - run: npm publish --access public dist/
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
