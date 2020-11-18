@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true,
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
 }
