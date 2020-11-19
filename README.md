@@ -1,6 +1,6 @@
 ### The Otohime Parser
 
-The parser will take the HTML text, parsing using `DOMParser` and return an object for each function.
+The parser will take the `HTMLDocument` or text (parsing with `DOMParser`) and return an object for each function.
 
 You need polyfill for `DOMParser` if you are not under browser environment.
 

@@ -1,9 +1,10 @@
 {
   "name": "@otohime-site/parser",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "module": "index.js",
   "types": "index.d.ts",
+  "homepage": "https://github.com/otohime-site/parser#readme",
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "test": "jest --coverage",

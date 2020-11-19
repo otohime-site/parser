@@ -9,8 +9,11 @@ export interface PlayerParseResult {
   trophy: 'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow'
 }
 
-const parsePlayer = (htmlContent: string): PlayerParseResult => {
-  const document: HTMLDocument = new DOMParser().parseFromString(htmlContent, 'text/html')
+const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
+  const document = (typeof content === 'string')
+    ? new DOMParser().parseFromString(content, 'text/html')
+    : content
+
   const cardName = document.querySelector('.name_block')?.textContent ?? ''
   const title = document.querySelector('.trophy_inner_block > span')?.textContent ?? ''.trim()
   const trophy = (document.querySelector('.trophy_block')?.className.match(/Normal|Bronze|Silver|Gold|Rainbow/) ?? [''])[0].toLowerCase()

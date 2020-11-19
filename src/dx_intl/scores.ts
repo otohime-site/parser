@@ -11,8 +11,11 @@ export interface ScoresParseEntry {
   sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+'
 }
 
-const parseScores = (htmlContent: string): ScoresParseEntry[] => {
-  const document: HTMLDocument = new DOMParser().parseFromString(htmlContent, 'text/html')
+const parseScores = (content: string | HTMLDocument): ScoresParseEntry[] => {
+  const document = (typeof content === 'string')
+    ? new DOMParser().parseFromString(content, 'text/html')
+    : content
+
   const entries = [
     ...document.querySelectorAll('.main_wrapper > .screw_block, .main_wrapper > .w_450').values()
   ]
