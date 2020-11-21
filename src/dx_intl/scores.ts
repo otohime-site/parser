@@ -41,7 +41,10 @@ const parseScores = (content: string | HTMLDocument, categoryTo: number = 6, wit
           currentCategory: prev.currentCategory + 1
         }
       }
-      const rawMusicDifficulty = (curr.querySelector('div')?.className?.match(/basic|advanced|expert|master|remaster/) ?? [''])[0]
+      const rawMusicDifficulty = (
+        curr.className?.match(/_(basic|advanced|expert|master|remaster)/) ??
+        curr.querySelector('div')?.className?.match(/_(basic|advanced|expert|master|remaster)/) ??
+        ['', ''])[1]
       const category = prev.currentCategory
       const title = curr.querySelector('.music_name_block')?.textContent ?? ''
       const difficulty = ['basic', 'advanced', 'expert', 'master', 'remaster'].indexOf(rawMusicDifficulty)
