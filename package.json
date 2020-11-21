@@ -1,9 +1,8 @@
 {
   "name": "@otohime-site/parser",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "license": "MIT",
-  "type": "module",
-  "module": "index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "homepage": "https://github.com/otohime-site/parser#readme",
   "scripts": {

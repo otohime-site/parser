@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "module": "esnext",
+    "module": "umd",
     "moduleResolution": "node",
     "strict": true,
     "allowSyntheticDefaultImports": true,
