@@ -11,7 +11,7 @@ export interface ScoresParseEntry {
   sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+'
 }
 
-const parseScores = (content: string | HTMLDocument): ScoresParseEntry[] => {
+const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, categoryTo: number = 6): ScoresParseEntry[] => {
   const document = (typeof content === 'string')
     ? new DOMParser().parseFromString(content, 'text/html')
     : content
@@ -43,7 +43,7 @@ const parseScores = (content: string | HTMLDocument): ScoresParseEntry[] => {
       // If only one type: determine by .music_kind_icon (standard.png vs dx.png)
       // Two types: determine by id (sta_xx vs dx_xx)
       const rawDeluxe = curr.querySelector('.music_kind_icon')?.getAttribute('src') ?? ((curr.id.match(/sta|dx/) ?? [''])[0])
-      assertBetween(category, 1, 6, 'category')
+      assertBetween(category, categoryFrom, categoryTo, 'category')
       assertNonEmpty(title, 'title')
       assertBetween(difficulty, 0, 4, 'difficulty')
       assertNonEmpty(rawDeluxe, 'deluxe')
