@@ -1,6 +1,11 @@
 
 import { assertNonEmpty, assertBetween } from '../utils'
 
+const LEVELS = [
+  '1', '2', '3', '4', '5', '6', '7', '7+', '8',
+  '8+', '9', '9+', '10', '10+', '11', '11+',
+  '12', '12+', '13', '13+', '14', '14+', '15'] as const
+
 export interface ScoresParseEntry {
   category: number
   title: string
@@ -9,6 +14,7 @@ export interface ScoresParseEntry {
   score: number
   combo_flag: '' | 'fc' | 'fc+' | 'ap' | 'ap+'
   sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+'
+  level: typeof LEVELS[number]
 }
 
 const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, categoryTo: number = 6): ScoresParseEntry[] => {
@@ -40,6 +46,7 @@ const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, c
       const category = prev.currentCategory
       const title = curr.querySelector('.music_name_block')?.textContent ?? ''
       const difficulty = ['basic', 'advanced', 'expert', 'master', 'remaster'].indexOf(rawMusicDifficulty)
+      const rawLevel = curr.querySelector('.music_lv_block')?.textContent ?? ''
       // If only one type: determine by .music_kind_icon (standard.png vs dx.png)
       // Two types: determine by id (sta_xx vs dx_xx)
       const rawDeluxe = curr.querySelector('.music_kind_icon')?.getAttribute('src') ?? ((curr.id.match(/sta|dx/) ?? [''])[0])
@@ -47,9 +54,13 @@ const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, c
       assertNonEmpty(title, 'title')
       assertBetween(difficulty, 0, 4, 'difficulty')
       assertNonEmpty(rawDeluxe, 'deluxe')
+      assertNonEmpty(rawLevel, 'level')
       const score = parseFloat(rawScore)
       const deluxe = (rawDeluxe === 'dx' || rawDeluxe.includes('dx.png'))
       assertBetween(score, 0, 101, 'score')
+      const levelIndex = (LEVELS as readonly string[]).indexOf(rawLevel)
+      if (levelIndex < 0) { throw new Error('Level is not matched!') }
+      const level = LEVELS[levelIndex]
 
       const flagImages = [...curr.querySelectorAll('img.f_r').values()]
       const flags = flagImages.reduce<{
@@ -89,6 +100,7 @@ const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, c
             deluxe,
             difficulty,
             score,
+            level,
             ...flags
           }
         ]

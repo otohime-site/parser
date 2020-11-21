@@ -29,6 +29,7 @@ const scoresContent = `
   <div class="w_450 m_15 p_r f_0">
     <div class="music_master_score_back pointer p_3">
       <form>
+        <div class="music_lv_block f_r t_c f_14">12</div>
         <div class="music_name_block t_l f_13 break">Test song 1</div>
         <div class="music_score_block w_120 t_r f_l f_12">99.4738%</div>
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png" class="h_30 f_r">
@@ -41,6 +42,7 @@ const scoresContent = `
   <div class="w_450 m_15 p_r f_0" id="dx_1" style="margin-top:30px">
     <div class="music_master_score_back pointer p_3">
       <form>
+        <div class="music_lv_block f_r t_c f_14">13</div>
         <div class="music_name_block t_l f_13 break">Test song 2</div>
         <div class="music_score_block w_120 t_r f_l f_12">100.0208%</div>
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_fs.png" class="h_30 f_r">
@@ -52,6 +54,7 @@ const scoresContent = `
   <div class="w_450 m_15 p_r f_0" id="sta_1" style="margin-top:30px">
     <div class="music_master_score_back pointer p_3">
       <form>
+        <div class="music_lv_block f_r t_c f_14">11</div>
         <div class="music_name_block t_l f_13 break">Test song 2</div>
         <div class="music_score_block w_120 t_r f_l f_12">99.1234%</div>
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png" class="h_30 f_r">
@@ -82,7 +85,8 @@ test('Score should parse successfully', () => {
       difficulty: 3,
       score: 99.4738,
       combo_flag: 'fc',
-      sync_flag: ''
+      sync_flag: '',
+      level: '12'
     }, {
       category: 1,
       title: 'Test song 2',
@@ -90,7 +94,8 @@ test('Score should parse successfully', () => {
       difficulty: 3,
       score: 100.0208,
       combo_flag: 'fc+',
-      sync_flag: 'fs'
+      sync_flag: 'fs',
+      level: '13'
     }, {
       category: 1,
       title: 'Test song 2',
@@ -98,7 +103,8 @@ test('Score should parse successfully', () => {
       difficulty: 3,
       score: 99.1234,
       combo_flag: '',
-      sync_flag: ''
+      sync_flag: '',
+      level: '11'
     }
   ])
 })
