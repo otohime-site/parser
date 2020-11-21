@@ -6,18 +6,22 @@ const LEVELS = [
   '8+', '9', '9+', '10', '10+', '11', '11+',
   '12', '12+', '13', '13+', '14', '14+', '15'] as const
 
-export interface ScoresParseEntry {
+export interface ScoresParseEntryWithoutScore {
   category: number
   title: string
   deluxe: boolean
   difficulty: number
+  level: typeof LEVELS[number]
+}
+export interface ScoresParseEntryWithScore extends ScoresParseEntryWithoutScore {
   score: number
   combo_flag: '' | 'fc' | 'fc+' | 'ap' | 'ap+'
   sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+'
-  level: typeof LEVELS[number]
 }
 
-const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, categoryTo: number = 6): ScoresParseEntry[] => {
+export type ScoresParseEntry = ScoresParseEntryWithoutScore | ScoresParseEntryWithScore
+
+const parseScores = (content: string | HTMLDocument, categoryTo: number = 6, withNoScore: boolean = false): ScoresParseEntry[] => {
   const document = (typeof content === 'string')
     ? new DOMParser().parseFromString(content, 'text/html')
     : content
@@ -37,11 +41,6 @@ const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, c
           currentCategory: prev.currentCategory + 1
         }
       }
-      const rawScore = (curr.querySelector('.music_score_block')?.textContent ?? '').replace('%', '')
-      if (rawScore.length === 0) {
-        // Skip if it is not played yet
-        return { ...prev }
-      }
       const rawMusicDifficulty = (curr.querySelector('div')?.className?.match(/basic|advanced|expert|master|remaster/) ?? [''])[0]
       const category = prev.currentCategory
       const title = curr.querySelector('.music_name_block')?.textContent ?? ''
@@ -50,17 +49,37 @@ const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, c
       // If only one type: determine by .music_kind_icon (standard.png vs dx.png)
       // Two types: determine by id (sta_xx vs dx_xx)
       const rawDeluxe = curr.querySelector('.music_kind_icon')?.getAttribute('src') ?? ((curr.id.match(/sta|dx/) ?? [''])[0])
-      assertBetween(category, categoryFrom, categoryTo, 'category')
+      assertBetween(category, 1, categoryTo, 'category')
       assertNonEmpty(title, 'title')
       assertBetween(difficulty, 0, 4, 'difficulty')
       assertNonEmpty(rawDeluxe, 'deluxe')
       assertNonEmpty(rawLevel, 'level')
-      const score = parseFloat(rawScore)
+
       const deluxe = (rawDeluxe === 'dx' || rawDeluxe.includes('dx.png'))
-      assertBetween(score, 0, 101, 'score')
       const levelIndex = (LEVELS as readonly string[]).indexOf(rawLevel)
       if (levelIndex < 0) { throw new Error('Level is not matched!') }
       const level = LEVELS[levelIndex]
+
+      const rawScore = (curr.querySelector('.music_score_block')?.textContent ?? '').replace('%', '')
+      if (rawScore.length === 0) {
+        // Skip if it is not played yet
+        return (withNoScore)
+          ? {
+            ...prev,
+            result: [
+              ...prev.result, {
+                category,
+                title,
+                deluxe,
+                difficulty,
+                level
+              }
+            ]
+          }
+          : { ...prev }
+      }
+      const score = parseFloat(rawScore)
+      assertBetween(score, 0, 101, 'score')
 
       const flagImages = [...curr.querySelectorAll('img.f_r').values()]
       const flags = flagImages.reduce<{
@@ -99,8 +118,8 @@ const parseScores = (content: string | HTMLDocument, categoryFrom: number = 1, c
             title,
             deluxe,
             difficulty,
-            score,
             level,
+            score,
             ...flags
           }
         ]
