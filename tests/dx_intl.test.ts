@@ -23,6 +23,29 @@ const playerContent = `
   </div>
 </div>
 `
+const playerContentWithMarquee = `
+<div class="basic_block p_10 p_b_5 f_0">
+  <div class="p_l_10 f_l">
+    <div class="trophy_block trophy_Bronze p_3 t_c f_0">
+      <div class="trophy_inner_block f_13">
+        <div style="display: block-inline; width: 260px; height: 24px; overflow: hidden;"><div style="float: left; white-space: nowrap; padding: 0px 260px;">打打打打打打打打打打打打打打打打打打打打打打打打</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="name_block f_l f_14">ＴＥＳＴ</div>
+      <div class="f_r t_r f_0">
+        <div class="p_r p_3">
+          <img src="https://maimaidx-eng.com/maimai-mobile/img/rating_base_rainbow.png" class="h_30 f_r" />
+          <div class="rating_block f_11">10100</div>
+        </div>
+    <div class="p_r_5 f_11">MAX：10150</div>
+    </div>
+  </div>
+  <img src="https://maimaidx-eng.com/maimai-mobile/img/grade_21mE7PnCYg.png">
+  </div>
+</div>
+`
+
 const scoresContent = `
 <div class="wrapper main_wrapper t_c">
   <div class="screw_block m_15 f_15">POPS &amp; ANIME</div>
@@ -74,6 +97,16 @@ test('Player should parse successfully', () => {
     rating: 8500,
     max_rating: 8600,
     grade: 13
+  })
+})
+test('Player should parse successfully if title is a marquee', () => {
+  expect(parsePlayer(playerContentWithMarquee)).toEqual({
+    card_name: 'ＴＥＳＴ',
+    title: '打打打打打打打打打打打打打打打打打打打打打打打打',
+    trophy: 'bronze',
+    rating: 10100,
+    max_rating: 10150,
+    grade: 21
   })
 })
 test('Score should parse successfully', () => {

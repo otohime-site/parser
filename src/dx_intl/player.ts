@@ -15,7 +15,8 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
     : content
 
   const cardName = document.querySelector('.name_block')?.textContent ?? ''
-  const title = document.querySelector('.trophy_inner_block > span')?.textContent ?? ''.trim()
+  // On marquee mode, the title will use another HTML structure...
+  const title = document.querySelector('.trophy_inner_block > span, .trophy_inner_block > div > div')?.textContent ?? ''.trim()
   const trophy = (document.querySelector('.trophy_block')?.className.match(/Normal|Bronze|Silver|Gold|Rainbow/) ?? [''])[0].toLowerCase()
   const ratingBlock = document.querySelector('.rating_block')
   const rawRating = ratingBlock?.textContent ?? ''
