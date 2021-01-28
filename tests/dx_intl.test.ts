@@ -16,7 +16,6 @@ const playerContent = `
           <img src="https://maimaidx-eng.com/maimai-mobile/img/rating_base_rainbow.png" class="h_30 f_r" />
           <div class="rating_block f_11">8500</div>
         </div>
-    <div class="p_r_5 f_11">MAX：8600</div>
     </div>
   </div>
   <img src="https://maimaidx-eng.com/maimai-mobile/img/grade_13e4SAdtXj.png">
@@ -38,7 +37,6 @@ const playerContentWithMarquee = `
           <img src="https://maimaidx-eng.com/maimai-mobile/img/rating_base_rainbow.png" class="h_30 f_r" />
           <div class="rating_block f_11">10100</div>
         </div>
-    <div class="p_r_5 f_11">MAX：10150</div>
     </div>
   </div>
   <img src="https://maimaidx-eng.com/maimai-mobile/img/grade_21mE7PnCYg.png">
@@ -95,7 +93,6 @@ test('Player should parse successfully', () => {
     title: 'Test Title',
     trophy: 'gold',
     rating: 8500,
-    max_rating: 8600,
     grade: 13
   })
 })
@@ -105,7 +102,6 @@ test('Player should parse successfully if title is a marquee', () => {
     title: '打打打打打打打打打打打打打打打打打打打打打打打打',
     trophy: 'bronze',
     rating: 10100,
-    max_rating: 10150,
     grade: 21
   })
 })

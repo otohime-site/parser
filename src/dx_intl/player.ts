@@ -4,7 +4,6 @@ export interface PlayerParseResult {
   card_name: string
   grade: number
   rating: number
-  max_rating: number
   title: string
   trophy: 'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow'
 }
@@ -20,13 +19,11 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
   const trophy = (document.querySelector('.trophy_block')?.className.match(/Normal|Bronze|Silver|Gold|Rainbow/) ?? [''])[0].toLowerCase()
   const ratingBlock = document.querySelector('.rating_block')
   const rawRating = ratingBlock?.textContent ?? ''
-  const rawMaxRating = (ratingBlock?.parentElement?.nextElementSibling?.textContent?.match(/([0-9]+)/) ?? [''])[0]
   const rawGrade = (document.querySelector('img[src *= "/img/grade_"]')?.getAttribute('src')?.match(/grade_([0-9]{2})/) ?? ['', ''])[1]
   assertNonEmpty(cardName, 'card_name')
   assertNonEmpty(title, 'title')
   assertNonEmpty(trophy, 'trophy')
   assertNonEmpty(rawRating, 'rating')
-  assertNonEmpty(rawMaxRating, 'max_rating')
   assertNonEmpty(rawGrade, 'grade')
 
   // To make TypeScript happy
@@ -35,10 +32,8 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
   }
 
   const rating = parseInt(rawRating, 10)
-  const maxRating = parseInt(rawMaxRating, 10)
   const grade = parseInt(rawGrade, 10)
   assertBetween(rating, 0, 14999, 'rating')
-  assertBetween(maxRating, 0, 14999, 'max_rating')
   assertBetween(grade, 1, 25, 'grade')
 
   return {
@@ -46,7 +41,6 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
     title,
     trophy,
     rating,
-    max_rating: maxRating,
     grade
   }
 }
