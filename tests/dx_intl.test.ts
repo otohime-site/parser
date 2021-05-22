@@ -1,5 +1,5 @@
-import parsePlayer from '../src/dx_intl/player'
-import parseScores from '../src/dx_intl/scores'
+import parsePlayer from "../src/dx_intl/player"
+import parseScores from "../src/dx_intl/scores"
 
 const playerContent = `
 <div class="basic_block p_10 p_b_5 f_0">
@@ -87,53 +87,55 @@ const scoresContent = `
   <div class="screw_block m_15 f_15">niconico ＆ VOCALOID™</div>
 </div>
 `
-test('Player should parse successfully', () => {
+test("Player should parse successfully", () => {
   expect(parsePlayer(playerContent)).toEqual({
-    card_name: 'ＴＥＳＴ',
-    title: 'Test Title',
-    trophy: 'gold',
+    card_name: "ＴＥＳＴ",
+    title: "Test Title",
+    trophy: "gold",
     rating: 8500,
-    grade: 13
+    grade: 13,
   })
 })
-test('Player should parse successfully if title is a marquee', () => {
+test("Player should parse successfully if title is a marquee", () => {
   expect(parsePlayer(playerContentWithMarquee)).toEqual({
-    card_name: 'ＴＥＳＴ',
-    title: '打打打打打打打打打打打打打打打打打打打打打打打打',
-    trophy: 'bronze',
+    card_name: "ＴＥＳＴ",
+    title: "打打打打打打打打打打打打打打打打打打打打打打打打",
+    trophy: "bronze",
     rating: 10100,
-    grade: 21
+    grade: 21,
   })
 })
-test('Score should parse successfully', () => {
+test("Score should parse successfully", () => {
   expect(parseScores(scoresContent)).toEqual([
     {
       category: 1,
-      title: 'Test song 1',
+      title: "Test song 1",
       deluxe: false,
       difficulty: 3,
       score: 99.4738,
-      combo_flag: 'fc',
-      sync_flag: '',
-      level: '12'
-    }, {
+      combo_flag: "fc",
+      sync_flag: "",
+      level: "12",
+    },
+    {
       category: 1,
-      title: 'Test song 2',
+      title: "Test song 2",
       deluxe: true,
       difficulty: 3,
       score: 100.0208,
-      combo_flag: 'fc+',
-      sync_flag: 'fs',
-      level: '13'
-    }, {
+      combo_flag: "fc+",
+      sync_flag: "fs",
+      level: "13",
+    },
+    {
       category: 1,
-      title: 'Test song 2',
+      title: "Test song 2",
       deluxe: false,
       difficulty: 3,
       score: 99.1234,
-      combo_flag: '',
-      sync_flag: '',
-      level: '11'
-    }
+      combo_flag: "",
+      sync_flag: "",
+      level: "11",
+    },
   ])
 })
