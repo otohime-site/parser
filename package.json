@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint",
     "test": "jest --coverage",
-    "build": "rm -rf dist/ && tsc && cp package.json dist/ && cp README.md dist/",
+    "build": "rm -rf dist/ && tsc && cp README.md dist/ && jq 'del(.scripts.prepare)' package.json > dist/package.json",
     "prepare": "husky install"
   },
   "devDependencies": {
