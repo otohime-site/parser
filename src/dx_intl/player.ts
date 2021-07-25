@@ -1,14 +1,24 @@
 import { assertNonEmpty, assertBetween } from "../utils"
 
-export interface PlayerParseResult {
+interface PlayerParseResultBase {
   card_name: string
-  grade: number
   rating: number
   title: string
   trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
 }
 
-const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
+export interface PlayerParseResultLegacy extends PlayerParseResultBase {
+  grade: number
+}
+
+export interface PlayerParseResultNew extends PlayerParseResultBase {
+  course_rank: number
+  class_rank: number
+}
+
+const parsePlayer = (
+  content: string | HTMLDocument
+): PlayerParseResultLegacy | PlayerParseResultNew => {
   const document =
     typeof content === "string"
       ? new DOMParser().parseFromString(content, "text/html")
@@ -27,6 +37,14 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
   ])[0].toLowerCase()
   const ratingBlock = document.querySelector(".rating_block")
   const rawRating = ratingBlock?.textContent ?? ""
+  const rawCourseRank = (document
+    .querySelector('img[src *= "/img/course/"]')
+    ?.getAttribute("src")
+    ?.match(/course_rank_([0-9]{2})/) ?? ["", ""])[1]
+  const rawClassRank = (document
+    .querySelector('img[src *= "/img/class/"]')
+    ?.getAttribute("src")
+    ?.match(/_([0-9]{2})/) ?? ["", ""])[1]
   const rawGrade = (document
     .querySelector('img[src *= "/img/grade_"]')
     ?.getAttribute("src")
@@ -35,7 +53,12 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
   assertNonEmpty(title, "title")
   assertNonEmpty(trophy, "trophy")
   assertNonEmpty(rawRating, "rating")
-  assertNonEmpty(rawGrade, "grade")
+  if (
+    rawGrade.length === 0 &&
+    (rawCourseRank.length === 0 || rawClassRank.length === 0)
+  ) {
+    throw new Error("Cannot get the course/class ranks!")
+  }
 
   // To make TypeScript happy
   if (
@@ -49,16 +72,31 @@ const parsePlayer = (content: string | HTMLDocument): PlayerParseResult => {
   }
 
   const rating = parseInt(rawRating, 10)
-  const grade = parseInt(rawGrade, 10)
-  assertBetween(rating, 0, 14999, "rating")
-  assertBetween(grade, 1, 25, "grade")
 
+  if (rawGrade.length > 0) {
+    // old record, assert rating 14999
+    const grade = parseInt(rawGrade, 10)
+    assertBetween(rating, 0, 14999, "rating")
+    assertBetween(grade, 1, 25, "grade")
+    return {
+      card_name: cardName,
+      title,
+      trophy,
+      rating,
+      grade,
+    }
+  }
+  const courseRank = parseInt(rawCourseRank, 10)
+  const classRank = parseInt(rawClassRank, 10)
+  assertBetween(rating, 0, 17000, "rating")
+  // We will not have assertion on the new grades until it is confirmed.
   return {
     card_name: cardName,
     title,
     trophy,
     rating,
-    grade,
+    course_rank: courseRank,
+    class_rank: classRank,
   }
 }
 
