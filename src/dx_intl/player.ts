@@ -3,6 +3,9 @@ import { assertNonEmpty, assertBetween } from "../utils"
 interface PlayerParseResultBase {
   card_name: string
   rating: number
+  // Who did not play the new version yet
+  // will stay the previous rating
+  rating_legacy: boolean
   title: string
   trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
 }
@@ -15,6 +18,16 @@ export interface PlayerParseResultNew extends PlayerParseResultBase {
   course_rank: number
   class_rank: number
 }
+
+const isLegacyRating = (rating: number, ref: string): boolean =>
+  (ref === "green" && rating < 3000) ||
+  (ref === "orange" && rating < 4000) ||
+  (ref === "red" && rating < 7000) ||
+  (ref === "purple" && rating < 10000) ||
+  (ref === "bronze" && rating < 12000) ||
+  (ref === "silver" && rating < 13000) ||
+  (ref === "gold" && rating < 14000) ||
+  (ref === "rainbow" && rating < 15000)
 
 const parsePlayer = (
   content: string | HTMLDocument
@@ -37,6 +50,10 @@ const parsePlayer = (
   ])[0].toLowerCase()
   const ratingBlock = document.querySelector(".rating_block")
   const rawRating = ratingBlock?.textContent ?? ""
+  const ratingImageRef = (document
+    .querySelector('img[src *= "/img/rating_base_"]')
+    ?.getAttribute("src")
+    ?.match(/_([a-z]+)\.png/) ?? ["", ""])[1]
   const rawCourseRank = (document
     .querySelector('img[src *= "/img/course/"]')
     ?.getAttribute("src")
@@ -53,6 +70,8 @@ const parsePlayer = (
   assertNonEmpty(title, "title")
   assertNonEmpty(trophy, "trophy")
   assertNonEmpty(rawRating, "rating")
+  assertNonEmpty(ratingImageRef, "ratingImageRef")
+
   if (
     rawGrade.length === 0 &&
     (rawCourseRank.length === 0 || rawClassRank.length === 0)
@@ -83,6 +102,7 @@ const parsePlayer = (
       title,
       trophy,
       rating,
+      rating_legacy: isLegacyRating(rating, ratingImageRef),
       grade,
     }
   }
@@ -99,6 +119,7 @@ const parsePlayer = (
     title,
     trophy,
     rating,
+    rating_legacy: isLegacyRating(rating, ratingImageRef),
     course_rank: courseRank,
     class_rank: classRank,
   }

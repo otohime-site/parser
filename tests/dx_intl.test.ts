@@ -79,6 +79,42 @@ const playerContentNewVersion = `
 </div>
 `
 
+const playerContentNewVersionAndRating = `
+<div class="see_through_block m_15 m_t_0 p_10 p_r t_l f_0">
+	<div class="basic_block p_10 f_0">
+		<img src="https://maimaidx.jp/maimai-mobile/img/Icon/513dc5cb9f0ca1c7.png" class="w_112 f_l"/>
+		<div class="p_l_10 f_l">
+			<div class="trophy_block trophy_Bronze p_3 t_c f_0">
+				<div class="trophy_inner_block f_13">
+					<span>京都府勢</span>
+				</div>
+			</div>
+		<div class="m_b_5">
+			<div class="name_block f_l f_16">ＫＯＩＮＵ</div>
+			<div class="f_r t_r f_0">
+				<div class="p_r p_3">
+					<img src="https://maimaidx.jp/maimai-mobile/img/rating_base_gold.png?ver=1.17" class="h_30 f_r"/>
+					<div class="rating_block f_11">14323</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<img src="https://maimaidx.jp/maimai-mobile/img/line_01.png" class="user_data_block_line" />
+		<div class="clearfix"></div>
+		<img src="https://maimaidx.jp/maimai-mobile/img/course/course_rank_01T7GHJvGe.png" class="h_35 f_l"/>
+		<img src="https://maimaidx.jp/maimai-mobile/img/class/class_rank_s_04ZqZmdpb8.png" class="p_l_10 h_35 f_l">
+		<div class="p_l_10 f_l f_14"><img src="https://maimaidx.jp/maimai-mobile/img/icon_star.png" class="h_30 m_3 v_m"/>×3</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<img src="https://maimaidx.jp/maimai-mobile/img/Chara/a58681dff962bf96.png" class="w_120 m_t_10 f_r"/>
+		<div class="comment_block f_l f_12">
+		
+	</div>
+	<div class="clearfix"></div>
+</div>
+`
+
 const scoresContent = `
 <div class="wrapper main_wrapper t_c">
   <div class="screw_block m_15 f_15">POPS &amp; ANIME</div>
@@ -129,6 +165,7 @@ test("Player should parse successfully", () => {
     title: "Test Title",
     trophy: "gold",
     rating: 8500,
+    rating_legacy: true,
     grade: 13,
   })
 })
@@ -138,6 +175,7 @@ test("Player should parse successfully if title is a marquee", () => {
     title: "打打打打打打打打打打打打打打打打打打打打打打打打",
     trophy: "bronze",
     rating: 10100,
+    rating_legacy: true,
     grade: 21,
   })
 })
@@ -147,6 +185,18 @@ test("We should be able to parse the new version player", () => {
     title: "京都府勢",
     trophy: "bronze",
     rating: 5316,
+    rating_legacy: true,
+    course_rank: 1,
+    class_rank: 4,
+  })
+})
+test("We should be able to parse the new version player and rating", () => {
+  expect(parsePlayer(playerContentNewVersionAndRating)).toEqual({
+    card_name: "ＫＯＩＮＵ",
+    title: "京都府勢",
+    trophy: "bronze",
+    rating: 14323,
+    rating_legacy: false,
     course_rank: 1,
     class_rank: 4,
   })
