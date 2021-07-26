@@ -89,7 +89,11 @@ const parsePlayer = (
   const courseRank = parseInt(rawCourseRank, 10)
   const classRank = parseInt(rawClassRank, 10)
   assertBetween(rating, 0, 17000, "rating")
-  // We will not have assertion on the new grades until it is confirmed.
+  assertBetween(courseRank, 0, 22, "courseRank")
+  assertBetween(classRank, 0, 25, "classRank")
+  if (courseRank === 11) {
+    throw new Error("11 is not a expected course rank value")
+  }
   return {
     card_name: cardName,
     title,
