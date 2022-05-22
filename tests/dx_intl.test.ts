@@ -1,3 +1,5 @@
+import { expect, test } from "@jest/globals"
+
 import parsePlayer from "../src/dx_intl/player"
 import parseScores from "../src/dx_intl/scores"
 
