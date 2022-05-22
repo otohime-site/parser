@@ -45,9 +45,9 @@ export type ScoresParseEntry =
   | ScoresParseEntryWithScore
 
 const parseScores = (
-  content: string | HTMLDocument,
-  categoryTo: number = 6,
-  withNoScore: boolean = false
+  content: string | Document,
+  categoryTo = 6,
+  withNoScore = false
 ): ScoresParseEntry[] => {
   const document =
     typeof content === "string"
