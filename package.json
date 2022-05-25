@@ -1,6 +1,6 @@
 {
   "name": "@otohime-site/parser",
-  "version": "21.7.2",
+  "version": "22.5.1",
   "license": "MIT",
   "type": "module",
   "types": "index.d.ts",
