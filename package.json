@@ -1,13 +1,14 @@
 {
   "name": "@otohime-site/parser",
-  "version": "22.5.2",
+  "version": "22.5.3",
   "license": "MIT",
   "type": "module",
   "types": "index.d.ts",
   "homepage": "https://github.com/otohime-site/parser#readme",
   "exports": {
     ".": "./index.js",
-    "./dx_intl": "./dx_intl/*.js"
+    "./dx_intl": "./dx_intl/index.js",
+    "./dx_intl/*": "./dx_intl/*.js"
   },
   "scripts": {
     "lint": "eslint",
