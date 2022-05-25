@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "Node16",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

@@ -9,7 +9,7 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "tsconfig.json"
+    "project": "tsconfig.lint.json"
   },
   "rules": {
     "react/prop-types": "off",
@@ -17,8 +17,10 @@
     "@typescript-eslint/restrict-template-expressions": "off"
   },
   "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+    "import/resolver": {
+      "typescript": {
+        "project": "./"
+      }
     }
   }
 }

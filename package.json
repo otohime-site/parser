@@ -2,9 +2,13 @@
   "name": "@otohime-site/parser",
   "version": "21.7.2",
   "license": "MIT",
-  "main": "index.js",
+  "type": "module",
   "types": "index.d.ts",
   "homepage": "https://github.com/otohime-site/parser#readme",
+  "exports": {
+    ".": "./index.js",
+    "./dx_intl": "./dx_intl/index.js"
+  },
   "scripts": {
     "lint": "eslint",
     "test": "jest --coverage",
@@ -27,7 +31,7 @@
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "ts-jest": "^28.0.2",
-    "typescript": "^4.6.4"
+    "typescript": "^4.7.2"
   },
   "lint-staged": {
     "*.js,*.ts": "eslint --cache --fix",

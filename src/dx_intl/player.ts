@@ -1,4 +1,4 @@
-import { assertNonEmpty, assertBetween } from "../utils"
+import { assertNonEmpty, assertBetween } from "../utils.js"
 
 interface PlayerParseResultBase {
   card_name: string

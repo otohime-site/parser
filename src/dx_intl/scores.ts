@@ -1,4 +1,4 @@
-import { assertNonEmpty, assertBetween } from "../utils"
+import { assertNonEmpty, assertBetween } from "../utils.js"
 
 const LEVELS = [
   "1",
