@@ -109,7 +109,7 @@ const parsePlayer = (
   const courseRank = parseInt(rawCourseRank, 10)
   const classRank = parseInt(rawClassRank, 10)
   assertBetween(rating, 0, 17000, "rating")
-  assertBetween(courseRank, 0, 22, "courseRank")
+  assertBetween(courseRank, 0, 23, "courseRank")
   assertBetween(classRank, 0, 25, "classRank")
   if (courseRank === 11) {
     throw new Error("11 is not a expected course rank value")
