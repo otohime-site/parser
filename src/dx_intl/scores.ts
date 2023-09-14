@@ -31,13 +31,13 @@ export interface ScoresParseEntryWithoutScore {
   title: string
   deluxe: boolean
   difficulty: number
-  level: typeof LEVELS[number]
+  level: (typeof LEVELS)[number]
 }
 export interface ScoresParseEntryWithScore
   extends ScoresParseEntryWithoutScore {
   score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-  sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+  sync_flag: "" | "sync" | "fs" | "fs+" | "fdx" | "fdx+"
 }
 
 export type ScoresParseEntry =
@@ -138,7 +138,7 @@ const parseScores = (
       const flagImages = [...curr.querySelectorAll("img.f_r").values()]
       const flags = flagImages.reduce<{
         combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-        sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+        sync_flag: "" | "sync" | "sync" | "fs" | "fs+" | "fdx" | "fdx+"
       }>(
         (prevFlags, currFlagImg) => {
           const comboMatches = (currFlagImg.getAttribute("src") ?? "").match(
@@ -157,10 +157,12 @@ const parseScores = (
             }
           }
           const syncMatches = (currFlagImg.getAttribute("src") ?? "").match(
-            /(fs|fsp|fsd|fsdp)\.png/
+            /(sync|fs|fsp|fsd|fsdp)\.png/
           )
           if (syncMatches !== null) {
             switch (syncMatches[1]) {
+              case "sync":
+                return { ...prevFlags, sync_flag: "sync" }
               case "fs":
                 return { ...prevFlags, sync_flag: "fs" }
               case "fsp":
