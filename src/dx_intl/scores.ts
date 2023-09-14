@@ -138,7 +138,7 @@ const parseScores = (
       const flagImages = [...curr.querySelectorAll("img.f_r").values()]
       const flags = flagImages.reduce<{
         combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-        sync_flag: "" | "sync" | "sync" | "fs" | "fs+" | "fdx" | "fdx+"
+        sync_flag: "" | "sync" | "fs" | "fs+" | "fdx" | "fdx+"
       }>(
         (prevFlags, currFlagImg) => {
           const comboMatches = (currFlagImg.getAttribute("src") ?? "").match(
