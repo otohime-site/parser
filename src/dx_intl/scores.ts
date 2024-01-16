@@ -37,7 +37,7 @@ export interface ScoresParseEntryWithScore
   extends ScoresParseEntryWithoutScore {
   score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-  sync_flag: "" | "sync" | "fs" | "fs+" | "fdx" | "fdx+"
+  sync_flag: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
 }
 
 export type ScoresParseEntry =
@@ -138,7 +138,7 @@ const parseScores = (
       const flagImages = [...curr.querySelectorAll("img.f_r").values()]
       const flags = flagImages.reduce<{
         combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-        sync_flag: "" | "sync" | "fs" | "fs+" | "fdx" | "fdx+"
+        sync_flag: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
       }>(
         (prevFlags, currFlagImg) => {
           const comboMatches = (currFlagImg.getAttribute("src") ?? "").match(
@@ -162,7 +162,7 @@ const parseScores = (
           if (syncMatches !== null) {
             switch (syncMatches[1]) {
               case "sync":
-                return { ...prevFlags, sync_flag: "sync" }
+                return { ...prevFlags, sync_flag: "s" }
               case "fs":
                 return { ...prevFlags, sync_flag: "fs" }
               case "fsp":
