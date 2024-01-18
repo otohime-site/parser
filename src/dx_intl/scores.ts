@@ -157,7 +157,7 @@ const parseScores = (
             }
           }
           const syncMatches = (currFlagImg.getAttribute("src") ?? "").match(
-            /(sync|fs|fsp|fsd|fsdp)\.png/
+            /(sync|fs|fsp|fsd|fsdp|fdx|fdxp)\.png/
           )
           if (syncMatches !== null) {
             switch (syncMatches[1]) {
@@ -168,8 +168,10 @@ const parseScores = (
               case "fsp":
                 return { ...prevFlags, sync_flag: "fs+" }
               case "fsd":
+              case "fdx":
                 return { ...prevFlags, sync_flag: "fdx" }
               case "fsdp":
+              case "fdxp":
                 return { ...prevFlags, sync_flag: "fdx+" }
             }
           }
