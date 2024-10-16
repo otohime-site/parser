@@ -4,7 +4,8 @@
     "module": "Node16",
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true,
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "eslint.config.mjs", "jest.config.js"]
 }
