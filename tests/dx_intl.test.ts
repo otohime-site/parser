@@ -1,7 +1,7 @@
-import { expect, test } from "@jest/globals"
+import { expect, test } from "vitest"
 
-import parsePlayer from "../src/dx_intl/player"
-import parseScores from "../src/dx_intl/scores"
+import parsePlayer from "../src/dx_intl/player.js"
+import parseScores from "../src/dx_intl/scores.js"
 
 const playerContent = `
 <div class="basic_block p_10 p_b_5 f_0">
