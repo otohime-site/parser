@@ -10,11 +10,12 @@
     "./dx_intl": "./dx_intl/index.js",
     "./dx_intl/*": "./dx_intl/*.js"
   },
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "lint": "eslint",
     "test": "jest --coverage",
     "build": "rm -rf dist/ && tsc && cp README.md dist/ && jq 'del(.scripts.prepare)' package.json > dist/package.json",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
