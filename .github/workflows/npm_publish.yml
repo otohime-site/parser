@@ -20,4 +20,6 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
-      - run: pnpm publish --provenance --access public dist/
+      # https://github.com/pnpm/pnpm/issues/9011
+      # Git checks doesn't work for tag release yet
+      - run: pnpm publish --no-git-checks --provenance --access public dist/
