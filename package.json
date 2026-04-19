@@ -5,6 +5,7 @@
   "type": "module",
   "types": "index.d.ts",
   "homepage": "https://github.com/otohime-site/parser#readme",
+  "repository": "github:otohime-site/parser",
   "exports": {
     ".": "./index.js",
     "./dx_intl": "./dx_intl/index.js",
