@@ -126,6 +126,10 @@ const scoresContent = `
         <div class="music_lv_block f_r t_c f_14">12</div>
         <div class="music_name_block t_l f_13 break">Test song 1</div>
         <div class="music_score_block w_120 t_r f_l f_12">99.4738%</div>
+        <div class="music_score_block w_190 t_r f_l f_12">
+          <img src="https://maimaidx-eng.com/maimai-mobile/img/deluxscore.png" class="v_b f_l"/>
+          1,343 / 1,479
+        </div>
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_fc.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_ss.png" class="h_30 f_r">
@@ -139,6 +143,10 @@ const scoresContent = `
         <div class="music_lv_block f_r t_c f_14">13</div>
         <div class="music_name_block t_l f_13 break">Test song 2</div>
         <div class="music_score_block w_120 t_r f_l f_12">100.0208%</div>
+        <div class="music_score_block w_190 t_r f_l f_12">
+          <img src="https://maimaidx-eng.com/maimai-mobile/img/deluxscore.png" class="v_b f_l"/>
+          2,000 / 2,100
+        </div>
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_fs.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_fcp.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_sss.png" class="h_30 f_r">
@@ -151,11 +159,25 @@ const scoresContent = `
         <div class="music_lv_block f_r t_c f_14">11</div>
         <div class="music_name_block t_l f_13 break">Test song 2</div>
         <div class="music_score_block w_120 t_r f_l f_12">99.1234%</div>
+        <div class="music_score_block w_190 t_r f_l f_12">
+          <img src="https://maimaidx-eng.com/maimai-mobile/img/deluxscore.png" class="v_b f_l"/>
+          0 / 1,620
+        </div>
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png" class="h_30 f_r">
         <img src="https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png" class="h_30 f_r">
       </form>
     </div>
+  </div>
+  <div class="w_450 m_15 p_r f_0">
+    <div class="music_master_score_back pointer p_3">
+      <form>
+        <div class="music_lv_block f_r t_c f_14">12+</div>
+        <div class="music_name_block t_l f_13 break">Test song 3</div>
+        <div class="clearfix"></div>
+      </form>
+    </div>
+    <img src="https://maimaidx-eng.com/maimai-mobile/img/music_dx.png" class="music_kind_icon">
   </div>
   <div class="screw_block m_15 f_15">niconico ＆ VOCALOID™</div>
 </div>
@@ -211,6 +233,8 @@ test("Score should parse successfully", () => {
       deluxe: false,
       difficulty: 3,
       score: 99.4738,
+      dx_score: 1343,
+      max_dx_score: 1479,
       combo_flag: "fc",
       sync_flag: "",
       level: "12",
@@ -221,6 +245,8 @@ test("Score should parse successfully", () => {
       deluxe: true,
       difficulty: 3,
       score: 100.0208,
+      dx_score: 2000,
+      max_dx_score: 2100,
       combo_flag: "fc+",
       sync_flag: "fs",
       level: "13",
@@ -231,9 +257,37 @@ test("Score should parse successfully", () => {
       deluxe: false,
       difficulty: 3,
       score: 99.1234,
+      dx_score: 0,
+      max_dx_score: 1620,
       combo_flag: "",
       sync_flag: "",
       level: "11",
     },
   ])
+})
+test("Score should include unplayed charts when withNoScore is set", () => {
+  const scores = parseScores(scoresContent, 6, true)
+  expect(scores).toHaveLength(4)
+  expect(scores[3]).toEqual({
+    category: 1,
+    title: "Test song 3",
+    deluxe: true,
+    difficulty: 3,
+    level: "12+",
+  })
+})
+test("Score should fail if max DX score is not a multiple of 3", () => {
+  expect(() =>
+    parseScores(scoresContent.replace("1,343 / 1,479", "1,343 / 1,480")),
+  ).toThrow(/max_dx_score/)
+})
+test("Score should fail if DX score exceeds max DX score", () => {
+  expect(() =>
+    parseScores(scoresContent.replace("1,343 / 1,479", "1,482 / 1,479")),
+  ).toThrow(/dx_score/)
+})
+test("Score should fail if DX score is missing for a played chart", () => {
+  expect(() => parseScores(scoresContent.replace("1,343 / 1,479", ""))).toThrow(
+    /dx_score/,
+  )
 })

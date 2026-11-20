@@ -33,9 +33,12 @@ export interface ScoresParseEntryWithoutScore {
   difficulty: number
   level: (typeof LEVELS)[number]
 }
-export interface ScoresParseEntryWithScore
-  extends ScoresParseEntryWithoutScore {
+export interface ScoresParseEntryWithScore extends ScoresParseEntryWithoutScore {
   score: number
+  /** Can be 0 if the chart was only played before maimai DX */
+  dx_score: number
+  /** Always a multiple of 3 (3 * total notes) */
+  max_dx_score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
   sync_flag: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
 }
@@ -47,7 +50,7 @@ export type ScoresParseEntry =
 const parseScores = (
   content: string | Document,
   categoryTo = 6,
-  withNoScore = false
+  withNoScore = false,
 ): ScoresParseEntry[] => {
   const document =
     typeof content === "string"
@@ -75,7 +78,7 @@ const parseScores = (
         }
       }
       const rawMusicDifficulty = (curr.className?.match(
-        /_(basic|advanced|expert|master|remaster)/
+        /_(basic|advanced|expert|master|remaster)/,
       ) ??
         curr
           .querySelector("div")
@@ -111,10 +114,16 @@ const parseScores = (
       }
       const level = LEVELS[levelIndex]
 
-      const rawScore = (
-        curr.querySelector(".music_score_block")?.textContent ?? ""
-      ).replace("%", "")
-      if (rawScore.length === 0) {
+      // First block: score (e.g. 100.5000%), second block: DX score (e.g. 1,343 / 1,479)
+      // Both blocks are absent if the chart is not played yet
+      const scoreBlocks = [
+        ...curr.querySelectorAll(".music_score_block").values(),
+      ]
+      const rawScore = (scoreBlocks[0]?.textContent ?? "")
+        .replace("%", "")
+        .trim()
+      const rawDxScore = (scoreBlocks[1]?.textContent ?? "").trim()
+      if (rawScore.length === 0 && rawDxScore.length === 0) {
         // Skip if it is not played yet
         return withNoScore
           ? {
@@ -135,6 +144,22 @@ const parseScores = (
       const score = parseFloat(rawScore)
       assertBetween(score, 0, 101, "score")
 
+      const dxScoreMatches = rawDxScore
+        .replace(/,/g, "")
+        .match(/^(\d+)\s*\/\s*(\d+)$/)
+      if (dxScoreMatches === null) {
+        throw new Error("Cannot get the value of dx_score")
+      }
+      const dxScore = parseInt(dxScoreMatches[1], 10)
+      const maxDxScore = parseInt(dxScoreMatches[2], 10)
+      if (maxDxScore <= 0 || maxDxScore % 3 !== 0) {
+        throw new Error(
+          `max_dx_score should be a positive multiple of 3, received: ${maxDxScore}`,
+        )
+      }
+      // dx_score can be 0 if the chart was only played before maimai DX
+      assertBetween(dxScore, 0, maxDxScore, "dx_score")
+
       const flagImages = [...curr.querySelectorAll("img.f_r").values()]
       const flags = flagImages.reduce<{
         combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
@@ -142,7 +167,7 @@ const parseScores = (
       }>(
         (prevFlags, currFlagImg) => {
           const comboMatches = (currFlagImg.getAttribute("src") ?? "").match(
-            /(fc|fcp|ap|app)\.png/
+            /(fc|fcp|ap|app)\.png/,
           )
           if (comboMatches !== null) {
             switch (comboMatches[1]) {
@@ -157,7 +182,7 @@ const parseScores = (
             }
           }
           const syncMatches = (currFlagImg.getAttribute("src") ?? "").match(
-            /(sync|fs|fsp|fsd|fsdp|fdx|fdxp)\.png/
+            /(sync|fs|fsp|fsd|fsdp|fdx|fdxp)\.png/,
           )
           if (syncMatches !== null) {
             switch (syncMatches[1]) {
@@ -180,7 +205,7 @@ const parseScores = (
         {
           combo_flag: "",
           sync_flag: "",
-        }
+        },
       )
       return {
         ...prev,
@@ -193,6 +218,8 @@ const parseScores = (
             difficulty,
             level,
             score,
+            dx_score: dxScore,
+            max_dx_score: maxDxScore,
             ...flags,
           },
         ],
@@ -201,7 +228,7 @@ const parseScores = (
     {
       result: [],
       currentCategory: 0,
-    }
+    },
   )
   return result
 }
