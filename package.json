@@ -1,6 +1,6 @@
 {
   "name": "@otohime-site/parser",
-  "version": "26.4.0",
+  "version": "26.11.0",
   "license": "MIT",
   "type": "module",
   "types": "index.d.ts",
@@ -11,7 +11,7 @@
     "./dx_intl": "./dx_intl/index.js",
     "./dx_intl/*": "./dx_intl/*.js"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@12.22.0",
   "scripts": {
     "lint": "eslint",
     "test": "vitest run --coverage",
@@ -20,17 +20,18 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^24.12.2",
-    "@vitest/coverage-v8": "^4.1.4",
-    "@vitest/eslint-plugin": "^1.6.16",
-    "eslint": "^10.2.0",
+    "@types/node": "^26.6.6",
+    "@vitest/coverage-v8": "^5.1.1",
+    "@vitest/eslint-plugin": "^1.6.28",
+    "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "prettier": "^3.8.3",
+    "jsdom": "^31.0.1",
+    "lint-staged": "^17.6.1",
+    "prettier": "^3.10.1",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.2",
-    "vitest": "^4.1.4"
+    "typescript-eslint": "^8.73.0",
+    "vitest": "^5.1.1"
   },
   "lint-staged": {
     "*.js,*.ts": "eslint --cache --fix",
