@@ -269,7 +269,7 @@ test("Score should parse successfully", () => {
     },
   ])
 })
-test("Score should include unplayed charts when withNoScore is set", () => {
+test("Score should include unplayed charts when includeUnplayed is set", () => {
   const scores = parseScores(scoresContent, { includeUnplayed: true })
   expect(scores).toHaveLength(4)
   expect(scores[3]).toEqual({
