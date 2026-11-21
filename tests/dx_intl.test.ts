@@ -307,13 +307,15 @@ test("Score return type should follow includeUnplayed", () => {
     ScoresParseEntry[]
   >()
 })
-test("Player title should be trimmed", () => {
+test("Player title should keep full-width spaces", () => {
   expect(
     parsePlayer(
-      playerContent.replace(
-        "<span>Test Title</span>",
-        "<span>  Test Title\n</span>",
-      ),
+      playerContent.replace("<span>Test Title</span>", "<span>\u3000</span>"),
     ).title,
-  ).toBe("Test Title")
+  ).toBe("\u3000")
+})
+test("Score title should keep full-width spaces", () => {
+  expect(
+    parseScores(scoresContent.replace("Test song 1", "\u3000"))[0].title,
+  ).toBe("\u3000")
 })

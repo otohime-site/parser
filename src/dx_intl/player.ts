@@ -39,11 +39,12 @@ export function parsePlayer(content: string | Document): PlayerParseResult {
 
   const cardName = document.querySelector(".name_block")?.textContent ?? ""
   // On marquee mode, the title will use another HTML structure...
-  const title = (
+  // Do not trim: a gold title consists of full-width spaces (U+3000), the
+  // officially listed name of the song by x0o0x_ known as "Kisaragi Station"
+  const title =
     document.querySelector(
       ".trophy_inner_block > span, .trophy_inner_block > div > div",
     )?.textContent ?? ""
-  ).trim()
   const trophy = (document
     .querySelector(".trophy_block")
     ?.className.match(/Normal|Bronze|Silver|Gold|Rainbow/) ?? [
