@@ -44,14 +44,31 @@ export interface ScoresParseEntryWithScore extends ScoresParseEntryWithoutScore 
 }
 
 export type ScoresParseEntry =
-  | ScoresParseEntryWithoutScore
-  | ScoresParseEntryWithScore
+  ScoresParseEntryWithoutScore | ScoresParseEntryWithScore
 
-const parseScores = (
+export interface ParseScoresOptions {
+  /** Number of categories (genres) expected on the page, default 6 */
+  categoryCount?: number
+  /** Also return charts that are not played yet, default false */
+  includeUnplayed?: boolean
+}
+
+export function parseScores(
   content: string | Document,
-  categoryTo = 6,
-  withNoScore = false,
-): ScoresParseEntry[] => {
+  options?: ParseScoresOptions & { includeUnplayed?: false },
+): ScoresParseEntryWithScore[]
+export function parseScores(
+  content: string | Document,
+  options: ParseScoresOptions & { includeUnplayed: true },
+): ScoresParseEntry[]
+export function parseScores(
+  content: string | Document,
+  options?: ParseScoresOptions,
+): ScoresParseEntry[]
+export function parseScores(
+  content: string | Document,
+  { categoryCount = 6, includeUnplayed = false }: ParseScoresOptions = {},
+): ScoresParseEntry[] {
   const document =
     typeof content === "string"
       ? new DOMParser().parseFromString(content, "text/html")
@@ -101,7 +118,7 @@ const parseScores = (
       const rawDeluxe =
         curr.querySelector(".music_kind_icon")?.getAttribute("src") ??
         (curr.id.match(/sta|dx/) ?? [""])[0]
-      assertBetween(category, 1, categoryTo, "category")
+      assertBetween(category, 1, categoryCount, "category")
       assertNonEmpty(title, "title")
       assertBetween(difficulty, 0, 4, "difficulty")
       assertNonEmpty(rawDeluxe, "deluxe")
@@ -125,7 +142,7 @@ const parseScores = (
       const rawDxScore = (scoreBlocks[1]?.textContent ?? "").trim()
       if (rawScore.length === 0 && rawDxScore.length === 0) {
         // Skip if it is not played yet
-        return withNoScore
+        return includeUnplayed
           ? {
               ...prev,
               result: [
@@ -232,5 +249,3 @@ const parseScores = (
   )
   return result
 }
-
-export default parseScores

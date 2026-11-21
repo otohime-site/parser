@@ -1,6 +1,6 @@
 import { assertNonEmpty, assertBetween } from "../utils.js"
 
-interface PlayerParseResultBase {
+export interface PlayerParseResultBase {
   card_name: string
   rating: number
   // Who did not play the new version yet
@@ -29,9 +29,9 @@ const isLegacyRating = (rating: number, ref: string): boolean =>
   (ref === "gold" && rating < 14000) ||
   (ref === "rainbow" && rating < 15000)
 
-const parsePlayer = (
-  content: string | HTMLDocument
-): PlayerParseResultLegacy | PlayerParseResultNew => {
+export type PlayerParseResult = PlayerParseResultLegacy | PlayerParseResultNew
+
+export function parsePlayer(content: string | Document): PlayerParseResult {
   const document =
     typeof content === "string"
       ? new DOMParser().parseFromString(content, "text/html")
@@ -39,10 +39,11 @@ const parsePlayer = (
 
   const cardName = document.querySelector(".name_block")?.textContent ?? ""
   // On marquee mode, the title will use another HTML structure...
-  const title =
+  const title = (
     document.querySelector(
-      ".trophy_inner_block > span, .trophy_inner_block > div > div"
-    )?.textContent ?? "".trim()
+      ".trophy_inner_block > span, .trophy_inner_block > div > div",
+    )?.textContent ?? ""
+  ).trim()
   const trophy = (document
     .querySelector(".trophy_block")
     ?.className.match(/Normal|Bronze|Silver|Gold|Rainbow/) ?? [
@@ -124,5 +125,3 @@ const parsePlayer = (
     class_rank: classRank,
   }
 }
-
-export default parsePlayer

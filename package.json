@@ -3,13 +3,11 @@
   "version": "26.11.0",
   "license": "MIT",
   "type": "module",
-  "types": "index.d.ts",
   "homepage": "https://github.com/otohime-site/parser#readme",
   "repository": "github:otohime-site/parser",
+  "sideEffects": false,
   "exports": {
-    ".": "./index.js",
-    "./dx_intl": "./dx_intl/index.js",
-    "./dx_intl/*": "./dx_intl/*.js"
+    "./dx_intl": "./dx_intl/index.js"
   },
   "packageManager": "pnpm@12.22.0",
   "scripts": {

@@ -11,6 +11,7 @@ export default defineConfig([
   {
     files: ["tests/**"],
     plugins: { vitest },
+    settings: { vitest: { typecheck: true } },
     rules: vitest.configs.recommended.rules,
   },
   {

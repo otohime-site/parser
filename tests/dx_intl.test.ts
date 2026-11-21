@@ -1,7 +1,11 @@
-import { expect, test } from "vitest"
+import { expect, expectTypeOf, test } from "vitest"
 
-import parsePlayer from "../src/dx_intl/player.js"
-import parseScores from "../src/dx_intl/scores.js"
+import {
+  parsePlayer,
+  parseScores,
+  type ScoresParseEntry,
+  type ScoresParseEntryWithScore,
+} from "../src/dx_intl/index.js"
 
 const playerContent = `
 <div class="basic_block p_10 p_b_5 f_0">
@@ -266,7 +270,7 @@ test("Score should parse successfully", () => {
   ])
 })
 test("Score should include unplayed charts when withNoScore is set", () => {
-  const scores = parseScores(scoresContent, 6, true)
+  const scores = parseScores(scoresContent, { includeUnplayed: true })
   expect(scores).toHaveLength(4)
   expect(scores[3]).toEqual({
     category: 1,
@@ -290,4 +294,26 @@ test("Score should fail if DX score is missing for a played chart", () => {
   expect(() => parseScores(scoresContent.replace("1,343 / 1,479", ""))).toThrow(
     /dx_score/,
   )
+})
+test("Score return type should follow includeUnplayed", () => {
+  expectTypeOf(parseScores(scoresContent)).toEqualTypeOf<
+    ScoresParseEntryWithScore[]
+  >()
+  expectTypeOf(
+    parseScores(scoresContent, { includeUnplayed: true }),
+  ).toEqualTypeOf<ScoresParseEntry[]>()
+  const includeUnplayed = Math.random() > 2
+  expectTypeOf(parseScores(scoresContent, { includeUnplayed })).toEqualTypeOf<
+    ScoresParseEntry[]
+  >()
+})
+test("Player title should be trimmed", () => {
+  expect(
+    parsePlayer(
+      playerContent.replace(
+        "<span>Test Title</span>",
+        "<span>  Test Title\n</span>",
+      ),
+    ).title,
+  ).toBe("Test Title")
 })

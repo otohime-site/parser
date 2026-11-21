@@ -8,11 +8,11 @@ export function assertBetween(
   value: number,
   from: number,
   to: number,
-  varName: string
+  varName: string,
 ): asserts value {
   if (Number.isNaN(value) || value < from || value > to) {
     throw new Error(
-      `Assert failed for ${varName}, expected: ${from} ~ ${to}, received: ${value}`
+      `Assert failed for ${varName}, expected: ${from} ~ ${to}, received: ${value}`,
     )
   }
 }
